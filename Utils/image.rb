@@ -1,9 +1,10 @@
 module Utils
   class Image
-    attr_reader :image
+    attr_reader :image, :view
 
     def initialize(path)
       @image = Magick::Image.read(path).first
+      @view = @image.view(0, 0, width, height)
     end
 
     def pixel_count
@@ -51,7 +52,11 @@ module Utils
     end
 
     def save(path)
-      build_out_image.write(path)
+      # if @image_data
+        build_out_image.write(path)
+      # else
+        image.write(path)
+      # end
     end
 
     def display
