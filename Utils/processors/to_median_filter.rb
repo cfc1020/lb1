@@ -24,6 +24,11 @@ module Utils
               end
             end
 
+            # if i % 100 == 0
+              # puts (image.view[i][j].red)
+              # puts image.view[i][j]
+            # end
+
             array_pixels.sort_by! { |item| item.first[0] }
 
             result = array_pixels[array_pixels.length / 2]

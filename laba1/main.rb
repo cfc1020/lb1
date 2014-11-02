@@ -23,5 +23,5 @@ HistogrammPlotter.plot(image.histogramm, 'Before correction', 'out1.jpeg')
 Utils::Processors::ToNegative.new(image).run! if opts[:negative]
 Utils::Processors::ToMedianFilter.new(image).run! opts[:size] if opts[:median_filter]
 Utils::Processors::ToHarmonicMean.new(image).run! if opts[:harmonic_mean]
-HistogrammPlotter.plot(image.histogramm, 'After correction', 'out2.jpeg')
-image.save(opts[:outfile])
+image.save(opts[:outfile]) if opts[:negative] || opts[:median_filter] || opts[:harmonic_mean]
+HistogrammPlotter.plot(image.histogramm2(opts[:outfile]), 'After correction', 'out2.jpeg')

@@ -51,9 +51,22 @@ module Utils
       end.to_h
     end
 
+    def histogramm2 path
+      @image = Magick::Image.read(path).first
+      @image_data = nil
+      image_data.each.with_object(Hash.new(0)) do |(r, g, b), res|
+        y = 0.3 * r + 0.59 * g + 0.11 * b
+        res[y] += 1
+      end.map do |k, v|
+        [k, v / pixel_count.to_f]
+      end.sort_by do |k, v|
+        k
+      end.to_h
+    end
+
     def save(path)
       # if @image_data
-        build_out_image.write(path)
+        build_out_image.write('ff.jpeg')
       # else
         image.write(path)
       # end
