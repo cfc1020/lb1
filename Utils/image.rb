@@ -64,12 +64,12 @@ module Utils
       end.to_h
     end
 
-    def save(path)
-      # if @image_data
-        build_out_image.write('ff.jpeg')
-      # else
+    def save(path, flag)
+      unless flag
+        build_out_image.write(path)
+      else
         image.write(path)
-      # end
+      end
     end
 
     def display

@@ -3,45 +3,29 @@ require_relative 'base'
 module Utils
   module Processors
     class ToHarmonicMean < Base
-      def run! size = 3
-        # histogramm = image.histogramm
-        p size
-        image.height.times do |i|
-          image.width.times do |j|
-            start_i = i - size / 2 > 0 ? i - size / 2 : 0
-            start_j = j - size / size > 0 ? j - size / 2 : 0
+      def run! size = 9
+        image.image_data = image.image_data.map.with_index do |pixel, i|
+          r = pixel[0]
+          g = pixel[1]
+          b = pixel[2]
 
-            array_pixels = []
+          index = i - size / 2 >= 0 ? i - size / 2 : 0
 
-            start_i.upto(start_i + size - 1) do |ii|
-              start_j.upto(start_j + size - 1) do |jj|
-                array_pixels << [{get_gr(image.view[ii][jj].red,
-                  image.view[ii][jj].green,
-                  image.view[ii][jj].blue) => [image.view[ii][jj].red,
-                    image.view[ii][jj].red, image.view[ii][jj].blue]}] if ii < image.height && jj < image.width
-              end
-            end
-
-            array_pixels.sort_by! { |item| item.first[0] }
-
-            result = array_pixels[array_pixels.length / 2]
-
-            image.view[i][j].red = result[0].first[1][0]
-            image.view[i][j].green = result[0].first[1][1]
-            image.view[i][j].blue = result[0].first[1][2]
-
-            # image.view[i][j].red = 255 - image.view[i][j].red
-            # image.view[i][j].green = 255 - image.view[i][j].green
-            # image.view[i][j].blue = 255 - image.view[i][j].red
+          total = (index..(index + size)).inject do |acc, ii|  
+            break if ii >= image.image_data.size
+            acc \
+              + 1.0 / get_gr(
+                      image.image_data[ii][0],
+                      image.image_data[ii][1],
+                      image.image_data[ii][2]
+                    )
           end
-        end
 
-        # image.image.view = image.view
+          count = index + size < image.image_data.size ?
+            size : image.image_data.size - index
 
-        image.view.sync
-
-        image.image_data = image.image_data.map do |r, g, b|
-          [r, g, b]
+          total = count / total
+          [total / 3, total / 3, total / 3]
         end
       end
 
