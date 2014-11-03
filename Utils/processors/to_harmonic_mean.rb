@@ -15,9 +15,9 @@ module Utils
             break if ii >= image.image_data.size
             acc \
               + 1.0 / get_gr(
-                      image.image_data[ii][0],
-                      image.image_data[ii][1],
-                      image.image_data[ii][2]
+                      image.image_data.take(ii + 1).last[0],
+                      image.image_data.take(ii + 1).last[1],
+                      image.image_data.take(ii + 1).last[2]
                     )
           end
 
