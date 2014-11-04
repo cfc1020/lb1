@@ -7,7 +7,7 @@ module Utils
         image.height.times do |i|
           image.width.times do |j|
             start_i = i - size / 2 > 0 ? i - size / 2 : 0
-            start_j = j - size / size > 0 ? j - size / 2 : 0
+            start_j = j - size / 2 > 0 ? j - size / 2 : 0
 
             array_pixels = []
 

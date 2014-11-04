@@ -4,28 +4,53 @@ module Utils
   module Processors
     class ToHarmonicMean < Base
       def run! size = 9
-        image.image_data = image.image_data.map.with_index do |pixel, i|
-          r = pixel[0]
-          g = pixel[1]
-          b = pixel[2]
+        image.height.times do |i|
+          image.width.times do |j|
+            start_j = j - size / 2 > 0 ? j - size / 2 : 0
 
-          index = i - size / 2 >= 0 ? i - size / 2 : 0
+            total = (start_j..(start_j + size)).inject do |acc, jj|  
+              break acc if jj >= image.width
+              
+              gr = get_gr(
+                image.view[i][jj].red,
+                image.view[i][jj].green,
+                image.view[i][jj].blue
+              )
 
-          total = (index..(index + size)).inject do |acc, ii|  
-            break if ii >= image.image_data.size
-            acc \
-              + 1.0 / get_gr(
-                      image.image_data.take(ii + 1).last[0],
-                      image.image_data.take(ii + 1).last[1],
-                      image.image_data.take(ii + 1).last[2]
-                    )
+              if gr != 0.0
+                acc + 1.0 / gr
+              else
+                acc
+              end
+            end
+
+            # if i % 100 == 0
+              # puts (image.view[i][j].red)
+              # puts image.view[i][j]
+            # end
+
+            count = start_j + size < image.width ?
+              size : image.width - start_j
+
+            total = count / total
+
+            if total != Float::INFINITY && total > 1
+              # puts "#{total} - #{(total / 3).to_i}"
+              # puts image.view[i][j].red
+              image.view[i][j].red = (total / 3).to_i
+              # puts image.view[i][j].red
+              image.view[i][j].green = (total / 3).to_i
+              image.view[i][j].blue = (total / 3).to_i
+            end
           end
+        end
 
-          count = index + size < image.image_data.size ?
-            size : image.image_data.size - index
+        # image.image.view = image.view
 
-          total = count / total
-          [total / 3, total / 3, total / 3]
+        image.view.sync
+
+        image.image_data = image.image_data.map do |r, g, b|
+          [r, g, b]
         end
       end
 
