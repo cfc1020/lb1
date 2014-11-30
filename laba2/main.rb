@@ -19,3 +19,5 @@ image = Utils::Image.new(opts[:infile])
 bits = Utils::Processors::Binaryzation.run! image
 
 areas = Utils::Processors::Areas.run! image, bits
+
+
