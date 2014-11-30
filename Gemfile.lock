@@ -1,7 +1,13 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    coderay (1.1.0)
     gnuplot (2.6.2)
+    method_source (0.8.2)
+    pry (0.10.1)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
     rmagick (2.13.3)
     slop (3.6.0)
 
@@ -10,5 +16,6 @@ PLATFORMS
 
 DEPENDENCIES
   gnuplot
+  pry
   rmagick
   slop
