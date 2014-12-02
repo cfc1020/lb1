@@ -1,7 +1,16 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    coderay (1.1.0)
+    distance_measures (0.0.6)
     gnuplot (2.6.2)
+    k_means (0.0.7)
+      distance_measures (>= 0.0.0)
+    method_source (0.8.2)
+    pry (0.10.1)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
     rmagick (2.13.3)
     slop (3.6.0)
 
@@ -10,5 +19,7 @@ PLATFORMS
 
 DEPENDENCIES
   gnuplot
+  k_means
+  pry
   rmagick
   slop

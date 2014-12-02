@@ -72,6 +72,41 @@ module Utils
       end
     end
 
+    def each &block
+      self.height.times do |i|
+        self.width.times do |j|
+          block.call(
+            self.view[i][j].red,
+            self.view[i][j].green,
+            self.view[i][j].blue,
+          )
+        end
+      end
+    end
+
+    def map &block
+      arr1 = []
+      self.height.times do |i|
+        arr2 = []
+
+        self.width.times do |j|
+          arr2 << block.call(
+            self.view[i][j].red,
+            self.view[i][j].green,
+            self.view[i][j].blue,
+          )
+        end
+
+        arr1 << arr2
+      end
+
+      arr1
+    end
+
+    def self.get_gr(r, g, b)
+      0.3 * r + 0.59 * g + 0.11 * b
+    end
+
     def display
       build_out_image.display
     end
